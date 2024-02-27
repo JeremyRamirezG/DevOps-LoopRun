@@ -1,15 +1,16 @@
-trigger: none
+trigger:
+- main
 
 name: Deploy Bicep files
 
 variables:
   vmImageName: 'windows-2019'
 
-  azureServiceConnection: 'FunConnection-Subscription'
-  resourceGroupName: 'TestDevOpsDeployments'
-  templateFile: './main.bicep'
-  parametersFiles: './parameters/main1.parameters.json ./parameters/main2.parameters.json ./parameters/main3.parameters.json'
-  singleParameterFile: './parameters/main1.parameters.json'
+  azureServiceConnection: 'TestSubDeployment'
+  resourceGroupName: 'v-jeremyrTestCase2402120030001367'
+  templateFile: 'main.bicep'
+  parametersFiles: 'parameters/main1.parameters.json parameters/main2.parameters.json parameters/main3.parameters.json'
+  singleParameterFile: 'parameters/main1.parameters.json'
 pool:
   vmImage: $(vmImageName)
 
@@ -19,11 +20,10 @@ steps:
     azureSubscription: $(azureServiceConnection)
     azurePowerShellVersion: LatestVersion
     scriptType: 'InlineScript'
-    inlineScript: |
-      $parametersFilesArr = $(parametersFiles).Split(" ")
+    Inline: |
       $i = 1
+      $parametersFilesArr = $(parametersFiles).Split(" ")
       foreach ($parametersFile in $parametersFilesArr)
       {
         New-AzResourceGroupDeployment -Name DevOpsRun$i -ResourceGroupName $(resourceGroupName) -TemplateFile $(templateFile) -TemplateParameterFile $parametersFile
-        $i = $i + 1
       }
