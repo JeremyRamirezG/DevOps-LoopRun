@@ -1,0 +1,6 @@
+Documentation used
+
+Connection: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml
+YAML schema: https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/?view=azure-pipelines 
+Bicep with Azure DevOps: https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/add-template-to-azure-pipelines?tabs=CLI
+Powershell deployment: https://learn.microsoft.com/es-es/azure/devops/pipelines/tasks/reference/azure-powershell-v5?view=azure-pipelines
