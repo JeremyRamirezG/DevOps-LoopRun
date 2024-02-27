@@ -9,6 +9,16 @@ variables:
   azureServiceConnection: 'TestSubDeployment'
   resourceGroupName: 'v-jeremyrTestCase2402120030001367'
   templateFile: 'main.bicep'
+
+parameters:
+- name: 'regions'
+  type: object
+  default: [
+    'EASTUS',
+    'NORTHEUROPE',
+    'WESTUS'
+  ]
+
 pool:
   vmImage: $(vmImageName)
 
@@ -19,10 +29,8 @@ steps:
     azurePowerShellVersion: LatestVersion
     scriptType: 'InlineScript'
     Inline: |
-      $i = 1
-      $parametersFilesArr = "parameters/main1.parameters.json", "parameters/main2.parameters.json","parameters/main3.parameters.json"
-      foreach ($parametersFile in $parametersFilesArr)
+      $regionsArr = '${{ convertToJson(parameters.regions) }}' | ConvertFrom-Json;
+      foreach ($region in $regionsArr)
       {
-        New-AzResourceGroupDeployment -Name DevOpsRun$i -ResourceGroupName $(resourceGroupName) -TemplateFile $(templateFile) -TemplateParameterFile $parametersFile
-        $i = $i + 1
+        New-AzResourceGroupDeployment -Name DevOpsRun_$region -ResourceGroupName $(resourceGroupName) -TemplateFile $(templateFile) -TemplateParameterFile parameters/main_$region.parameters.json
       }
